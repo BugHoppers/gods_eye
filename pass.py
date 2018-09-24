@@ -7,6 +7,7 @@ from os.path import isfile, join
 from Crypto import Random
 from Crypto.Cipher import AES
 
+
 class Encryptor:
     def __init__(self, key):
         self.key = key
@@ -42,30 +43,26 @@ class Encryptor:
             fo.write(dec)
         os.remove(file_name)
 
+
 key = b'[EX\xc8\xd5\xbfI{\xa2$\x05(\xd5\x18\xbf\xc0\x85)\x10nc\x94\x02)j\xdf\xcb\xc4\x94\x9d(\x9e'
 enc = Encryptor(key)
-clear = lambda: os.system('clear')
+
+
+def clear(): return os.system('clear')
+
 
 if os.path.isfile('config.ge.enc'):
-    while True:
-        enc.decrypt_file("config.ge.enc")
-        p = ''
-        with open("config.ge", "r") as f:
-            p = f.readlines()
-        decryptedPassword = p[0]
-        print('The sudo password: ' + decryptedPassword)
-        enc.encrypt_file("config.ge")
-        break
+    enc.decrypt_file("config.ge.enc")
+    p = ''
+    with open("config.ge", "r") as f:
+        p = f.readlines()
+    decryptedPassword = p[0]
+    print('The sudo password: ' + decryptedPassword)
+    enc.encrypt_file("config.ge")
 
 else:
-    while True:
-        clear()
-        password = str(input("Setting up God's Eye. Enter your sudo password: "))
-        repassword = str(input("Confirm password: "))
-        if password == repassword:
-            break
-        else:
-            print("Sudo Passwords Mismatched!")
+    clear()
+    password = str(input("Setting up God's Eye. Enter your sudo password: "))
     f = open("config.ge", "w+")
     f.write(password)
     f.close()
