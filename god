@@ -5,9 +5,33 @@ import sys
 
 print("This is God's Eye !\n")
 
-with open('config.ge') as file:
-    sudoPassword = file.read()
+def find(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in files:
+            return os.path.join(root, name)
+    return False
 
-command = ' '.join(sys.argv[1:])
+def main():
+    paths = os.get_exec_path()
+    try :
+        for path in paths :
+            dir = find("config.ge", path)
+            # print(dir)
+            if dir is not False:
+                with open(dir) as file:
+                    sudoPassword = file.read()
+                break
+                
+        raise FileNotFoundError("Couldnot find config file for God's Eye !")
+            
+    except Exception as e :
+        print(str(e))
+        quit()
 
-os.system('echo %s|sudo -S %s' % (sudoPassword, command))
+    command = ' '.join(sys.argv[1:])
+
+    os.system('echo %s|sudo -S %s' % (sudoPassword, command))
+
+
+if __name__=='__main__':
+    main() 

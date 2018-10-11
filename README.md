@@ -17,11 +17,13 @@ This is a command line tool that substitute the ` sudo ` command so that we dono
 
 ##  Configure God's Eye
 
-- Create a file name ` config.ge ` and write you sudo password  
+1. Create a file name ` config.ge ` and write your sudo password  
+
+2. Add the directory to the PATH
 
 
 
 ##  How to Run
 
-        ./god < command >
+        god < command >
 
