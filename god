@@ -16,13 +16,12 @@ def main():
     try :
         for path in paths :
             dir = find("config.ge", path)
-            # print(dir)
             if dir is not False:
                 with open(dir) as file:
                     sudoPassword = file.read()
                 break
-                
-        raise FileNotFoundError("Couldnot find config file for God's Eye !")
+        if dir is False:
+            raise FileNotFoundError("Couldnot find config file for God's Eye !")
             
     except Exception as e :
         print(str(e))
