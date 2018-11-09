@@ -20,9 +20,10 @@ def main():
             if dir is not False:
                 with open(dir) as file:
                     sudoPassword = file.read()
+                print(sudoPassword)
                 break
-                
-        raise FileNotFoundError("Couldnot find config file for God's Eye !")
+        if dir is False:
+            raise FileNotFoundError("Couldnot find config file for God's Eye !")
             
     except Exception as e :
         print(str(e))
