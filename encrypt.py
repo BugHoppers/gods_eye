@@ -2,6 +2,7 @@
 
 import os
 import os.path
+import getpass
 from Crypto import Random
 from Crypto.Cipher import AES
 
@@ -60,7 +61,7 @@ def readPass(file):
 
 def getPass():
     clear()
-    password = str(input("Setting up God's Eye. Enter your sudo password: "))
+    password = str(getpass.getpass("Setting up God's Eye. Enter your sudo password: "))
     f = open("config.ge", "w+")
     f.write(password)
     f.close()
