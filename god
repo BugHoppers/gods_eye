@@ -2,6 +2,7 @@
 
 import os
 import sys
+from encrypt import readPass, getPass
 
 print("This is God's Eye !\n")
 
@@ -15,13 +16,13 @@ def main():
     paths = os.get_exec_path()
     try :
         for path in paths :
-            dir = find("config.ge", path)
+            dir = find("config.ge.enc", path)
             if dir is not False:
-                with open(dir) as file:
-                    sudoPassword = file.read()
+                sudoPassword = readPass("config.ge.enc")
                 break
         if dir is False:
-            raise FileNotFoundError("Couldnot find config file for God's Eye !")
+            #raise FileNotFoundError("Couldnot find config file for God's Eye !")
+            sudoPassword = getPass()
             
     except Exception as e :
         print(str(e))
