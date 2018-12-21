@@ -2,8 +2,6 @@
 
 import os
 import os.path
-from os import listdir
-from os.path import isfile, join
 from Crypto import Random
 from Crypto.Cipher import AES
 
