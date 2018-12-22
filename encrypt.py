@@ -62,7 +62,7 @@ def readPass(file):
 def getPass():
     clear()
     password = str(getpass.getpass("Setting up God's Eye. Enter your sudo password: "))
-    f = open("config.ge", "w+")
+    f = open("./config.ge", "w+")
     f.write(password)
     f.close()
     enc.encrypt_file("config.ge")
