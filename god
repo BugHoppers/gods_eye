@@ -21,8 +21,7 @@ def main():
                 sudoPassword = readPass("config.ge.enc")
                 break
         if dir is False:
-            #raise FileNotFoundError("Couldnot find config file for God's Eye !")
-            sudoPassword = getPass()
+            sudoPassword = getPass("config.ge")
             
     except Exception as e :
         print(str(e))

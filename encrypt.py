@@ -53,18 +53,19 @@ def clear(): return os.system('clear')
 def readPass(file):
     enc.decrypt_file(file)
     p = ''
-    with open("config.ge", "r") as f:
+    file = file[:-4]
+    with open(file, "r") as f:
         p = f.readlines()
     decryptedPassword = p[0]
-    enc.encrypt_file("config.ge")
+    enc.encrypt_file(file)
     return decryptedPassword
 
-def getPass():
+def getPass(file):
     clear()
     password = str(getpass.getpass("Setting up God's Eye. Enter your sudo password: "))
-    f = open("./config.ge", "w+")
+    f = open("./" + file, "w+")
     f.write(password)
     f.close()
-    enc.encrypt_file("config.ge")
+    enc.encrypt_file(file)
     print("Password encrypted.")
     return password
