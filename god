@@ -3,6 +3,7 @@
 import os
 import sys
 from encrypt import readPass, getPass
+from pathlib import Path
 
 print("This is God's Eye !\n")
 
@@ -16,12 +17,16 @@ def main():
     paths = os.get_exec_path()
     try :
         for path in paths :
-            dir = find("config.ge.enc", path)
-            if dir is not False:
-                sudoPassword = readPass("config.ge.enc")
+            if "gods_eye" in path:
+                dir = find(".tmp", path)
+                if dir is not False:
+                    sudoPassword = readPass("config.ge.enc")
+                elif dir is False:
+                    Path(path + "/.tmp").touch()
+                    sudoPassword = getPass("config.ge")
                 break
-        if dir is False:
-            sudoPassword = getPass("config.ge")
+            else:
+                continue
             
     except Exception as e :
         print(str(e))
