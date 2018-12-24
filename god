@@ -18,7 +18,7 @@ def main():
             dir = find("config.ge", path)
             if dir is not False:
                 with open(dir) as file:
-                    sudoPassword = file.read()
+                    sudoPassword = file.read()[:-1]
                 break
         if dir is False:
             raise FileNotFoundError("Couldnot find config file for God's Eye !")
