@@ -17,7 +17,7 @@ This is a command line tool that substitute the ` sudo ` command so that we dono
 
 3. Run the script :  
 
-        ./OpenGodsEye.sh  
+        bash ./OpenGodsEye.sh  
 
 
 ##  Configure God's Eye
