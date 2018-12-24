@@ -6,6 +6,7 @@ from os import listdir
 from os.path import isfile, join
 from Crypto import Random
 from Crypto.Cipher import AES
+import pickle
 
 
 class Encryptor:
@@ -44,14 +45,21 @@ class Encryptor:
         os.remove(file_name)
 
 
-key = b'[EX\xc8\xd5\xbfI{\xa2$\x05(\xd5\x18\xbf\xc0\x85)\x10nc\x94\x02)j\xdf\xcb\xc4\x94\x9d(\x9e'
-enc = Encryptor(key)
+if os.path.isfile('key'):
+    print('you have a key.')
+    with open('key', 'rb') as r:
+        key = pickle.load(r)
+else:
+    print('generating key...')
+    key = Random.get_random_bytes(32)
+    with open('key', 'wb') as w:
+        pickle.dump(key, w)
 
+enc = Encryptor(key)
 
 def clear(): return os.system('clear')
 
-
-if os.path.isfile('config.ge.enc'):
+if os.path.isfile('./config.ge.enc'):
     enc.decrypt_file("config.ge.enc")
     p = ''
     with open("config.ge", "r") as f:
