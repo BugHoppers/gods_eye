@@ -2,8 +2,8 @@
 
 import os
 import os.path
-from os import listdir
-from os.path import isfile, join
+import getpass
+from pathlib import Path
 from Crypto import Random
 from Crypto.Cipher import AES
 
@@ -46,25 +46,28 @@ class Encryptor:
 
 key = b'[EX\xc8\xd5\xbfI{\xa2$\x05(\xd5\x18\xbf\xc0\x85)\x10nc\x94\x02)j\xdf\xcb\xc4\x94\x9d(\x9e'
 enc = Encryptor(key)
-
+crypt_dir = str(Path.home()) + "/.god"
 
 def clear(): return os.system('clear')
 
 
-if os.path.isfile('config.ge.enc'):
-    enc.decrypt_file("config.ge.enc")
+def readPass(file):
+    enc.decrypt_file(crypt_dir + "/" + file)
     p = ''
-    with open("config.ge", "r") as f:
+    file = file[:-4]
+    with open(crypt_dir + "/" + file, "r") as f:
         p = f.readlines()
     decryptedPassword = p[0]
-    print('The sudo password: ' + decryptedPassword)
-    enc.encrypt_file("config.ge")
+    enc.encrypt_file(crypt_dir + "/" + file)
+    return decryptedPassword
 
-else:
+def getPass(file):
     clear()
-    password = str(input("Setting up God's Eye. Enter your sudo password: "))
-    f = open("config.ge", "w+")
+    password = str(getpass.getpass("Setting up God's Eye. Enter your sudo password: "))
+    os.mkdir(crypt_dir)
+    f = open(crypt_dir + "/" + file, "w+")
     f.write(password)
     f.close()
-    enc.encrypt_file("config.ge")
+    enc.encrypt_file(crypt_dir + "/" + file)    
     print("Password encrypted.")
+    return password
