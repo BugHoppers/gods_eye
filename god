@@ -7,17 +7,9 @@ from pathlib import Path
 
 print("This is God's Eye !\n")
 
-## Function for Find
-# def find(name, path):
-#     for root, dirs, files in os.walk(path):
-#         if name in files:
-#             return os.path.join(root, name)
-#     return False
-
-
 def main():
     try:
-        dir=(os.path.exists(str(Path.home())+"/.god"))
+        dir=(os.path.exists(str(Path.home()) + "/.god"))
         if dir is not False:
             sudoPassword=readPass("config.ge.enc")
         elif dir is False:
