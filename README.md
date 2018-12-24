@@ -17,7 +17,7 @@ This is a command line tool that substitute the ` sudo ` command so that we dono
 
 3. Run the script :  
 
-        bash ./OpenGodsEye.sh (your_sudo_password)
+        bash ./OpenGodsEye.sh
 
 
 ##  How to Run
