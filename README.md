@@ -10,7 +10,12 @@ This is a command line tool that substitute the ` sudo ` command so that we dono
         git clone "https://github.com/BugHoppers/gods_eye.git"  
 
 
-2. Run the script :  
+2. Move to folder :  
+
+        cd gods_eye  
+
+
+3. Run the script :  
 
         ./OpenGodsEye.sh  
 
