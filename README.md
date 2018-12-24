@@ -29,6 +29,7 @@ This is a command line tool that substitute the ` sudo ` command so that we dono
 
 2. Add the directory to the PATH
 
+        PATH=$PATH:$(pwd)
 
 
 ##  How to Run
