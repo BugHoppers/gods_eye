@@ -17,19 +17,7 @@ This is a command line tool that substitute the ` sudo ` command so that we dono
 
 3. Run the script :  
 
-        bash ./OpenGodsEye.sh  
-
-
-##  Configure God's Eye
-
-1. Create a file name ` config.ge ` and write your sudo password  
-
-        nano config.ge
-
-
-2. Add the directory to the PATH
-
-        PATH=$PATH:$(pwd)
+        bash ./OpenGodsEye.sh (your_sudo_password)
 
 
 ##  How to Run
