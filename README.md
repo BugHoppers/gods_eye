@@ -24,6 +24,9 @@ This is a command line tool that substitute the ` sudo ` command so that we dono
 
 1. Create a file name ` config.ge ` and write your sudo password  
 
+        sudo nano config.ge
+
+
 2. Add the directory to the PATH
 
 
