@@ -56,11 +56,6 @@ else:
     with open(crypt_dir + "/" + 'key', 'wb') as w:
         pickle.dump(key, w)
 enc = Encryptor(key)
-<<<<<<< HEAD:encrypt.py
-=======
-crypt_dir = str(Path.home()) + "/.god"
-
->>>>>>> 8a5babf4383385e39457ee204da5d9818fd8d00c:encrypt.py
 def clear(): return os.system('clear')
 
 
@@ -83,8 +78,4 @@ def getPass(file):
     f.close()
     enc.encrypt_file(crypt_dir + "/" + file)    
     print("Password encrypted.")
-<<<<<<< HEAD:encrypt.py
     return password
-=======
-    return password
->>>>>>> 8a5babf4383385e39457ee204da5d9818fd8d00c:encrypt.py
