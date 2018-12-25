@@ -52,6 +52,7 @@ if os.path.isfile(crypt_dir + "/" + "key"):
         key = pickle.load(r)
 else:
     print('generating key...')
+    mkdir(crypt_dir)
     key = Random.get_random_bytes(32)
     with open(crypt_dir + "/" + 'key', 'wb') as w:
         pickle.dump(key, w)
