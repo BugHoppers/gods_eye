@@ -3,5 +3,5 @@
 chmod +x god
 
 
-PATH=$PATH:$(pwd)
+exec bash
 echo "export PATH=\$PATH:$(pwd)" >> $HOME/.bashrc
