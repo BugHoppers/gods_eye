@@ -3,11 +3,11 @@
 import os
 import os.path
 import getpass
+import pickle
 from pathlib import Path
 from os.path import isfile, join
 from Crypto import Random
 from Crypto.Cipher import AES
-import pickle
 
 
 class Encryptor:
