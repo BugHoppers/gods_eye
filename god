@@ -2,18 +2,18 @@
 
 import os
 import sys
-from encrypt import readPass, getPass, crypt_dir
+from encrypt import readPass, getPass, CRYPT_DIR
 from pathlib import Path
 
 print("This is God's Eye !\n")
 
 def main():
     try:
-        dir = os.path.isfile(crypt_dir + "/" + "config.ge.enc")
-        if dir is not False:
-            sudoPassword=readPass("config.ge.enc")
-        elif dir is False:
-            sudoPassword=getPass("config.ge")
+        dir = os.path.isfile(CRYPT_DIR + "/" + "config.ge.enc")
+        if dir is True:
+            sudoPassword = readPass("config.ge.enc")
+        else:
+            sudoPassword = getPass("config.ge")
 
     except Exception as e:
         print(str(e))

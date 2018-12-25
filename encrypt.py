@@ -9,6 +9,7 @@ from os.path import isfile
 from Crypto import Random
 from Crypto.Cipher import AES
 
+CRYPT_DIR = str(Path.home()) + "/.god"
 
 class Encryptor:
     def __init__(self, key):
@@ -45,40 +46,35 @@ class Encryptor:
             fo.write(dec)
         os.remove(file_name)
 
-crypt_dir = str(Path.home()) + "/.god"
-
-if os.path.isfile(crypt_dir + "/" + "key"):
-    print('you have a key.')
-    with open(crypt_dir + "/" + 'key', 'rb') as r:
-        key = pickle.load(r)
-else:
-    print('generating key...')
-    os.mkdir(crypt_dir)
-    key = Random.get_random_bytes(32)
-    with open(crypt_dir + "/" + 'key', 'wb') as w:
-        pickle.dump(key, w)
-
-enc = Encryptor(key)
-def clear(): return os.system('clear')
-
+def key():
+    if os.path.isfile(CRYPT_DIR + "/" + "key"):
+        with open(CRYPT_DIR + "/" + 'key', 'rb') as r:
+            key = pickle.load(r)
+    else:
+        key = Random.get_random_bytes(32)
+        with open(CRYPT_DIR + "/" + 'key', 'wb') as w:
+            pickle.dump(key, w)
+    return key
 
 def readPass(file):
-    enc.decrypt_file(crypt_dir + "/" + file)
+    enc = Encryptor(key())
+    enc.decrypt_file(CRYPT_DIR + "/" + file)
     p = ''
     file = file[:-4]
-    with open(crypt_dir + "/" + file, "r") as f:
+    with open(CRYPT_DIR + "/" + file, "r") as f:
         p = f.readlines()
     decryptedPassword = p[0]
-    enc.encrypt_file(crypt_dir + "/" + file)
+    enc.encrypt_file(CRYPT_DIR + "/" + file)
     return decryptedPassword
 
 def getPass(file):
-    clear()
+    os.system('clear')
     password = str(getpass.getpass("Setting up God's Eye. Enter your sudo password: "))
-    # os.mkdir(crypt_dir)
-    f = open(crypt_dir + "/" + file, "w+")
+    os.mkdir(CRYPT_DIR)
+    f = open(CRYPT_DIR + "/" + file, "w+")
     f.write(password)
     f.close()
-    enc.encrypt_file(crypt_dir + "/" + file)    
+    enc = Encryptor(key())
+    enc.encrypt_file(CRYPT_DIR + "/" + file)    
     print("Password encrypted.")
     return password
