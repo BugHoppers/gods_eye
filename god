@@ -2,14 +2,14 @@
 
 import os
 import sys
-from encrypt import readPass, getPass
+from encrypt import readPass, getPass, crypt_dir
 from pathlib import Path
 
 print("This is God's Eye !\n")
 
 def main():
     try:
-        dir=(os.path.exists(str(Path.home()) + "/.god"))
+        dir = os.path.isfile(crypt_dir + "/" + "config.ge.enc")
         if dir is not False:
             sudoPassword=readPass("config.ge.enc")
         elif dir is False:
