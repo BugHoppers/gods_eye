@@ -15,9 +15,11 @@ class Encryptor:
     def __init__(self, key):
         self.key = key
 
-    def pad(self, s):
+    # padding
+    def pad(self, s):                                                           
         return s + b"\0" * (AES.block_size - len(s) % AES.block_size)
 
+    # functions for encrypting 
     def encrypt(self, message, key, key_size=256):
         message = self.pad(message)
         iv = Random.new().read(AES.block_size)
@@ -32,6 +34,7 @@ class Encryptor:
             fo.write(enc)
         os.remove(file_name)
 
+    # functions for decrypting
     def decrypt(self, ciphertext, key):
         iv = ciphertext[:AES.block_size]
         cipher = AES.new(key, AES.MODE_CBC, iv)
@@ -46,6 +49,7 @@ class Encryptor:
             fo.write(dec)
         os.remove(file_name)
 
+# generate random key
 def key():
     if os.path.isfile(CRYPT_DIR + "/" + "key"):
         with open(CRYPT_DIR + "/" + 'key', 'rb') as r:
@@ -56,6 +60,7 @@ def key():
             pickle.dump(key, w)
     return key
 
+# read sudo password from user and encrypt password
 def readPass(file):
     enc = Encryptor(key())
     enc.decrypt_file(CRYPT_DIR + "/" + file)
@@ -67,6 +72,7 @@ def readPass(file):
     enc.encrypt_file(CRYPT_DIR + "/" + file)
     return decryptedPassword
 
+# decrypt encrypted password and return it
 def getPass(file):
     os.system('clear')
     password = str(getpass.getpass("Setting up God's Eye. Enter your sudo password: "))
