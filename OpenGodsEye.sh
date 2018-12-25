@@ -4,4 +4,5 @@ chmod +x god
 
 
 PATH=$PATH:$(pwd)
-echo "PATH=\$PATH:$(pwd)" >> $HOME/.bashrc
+echo -e "\n# God's Eye Path :" >> $HOME/.bashrc
+echo "export PATH=\$PATH:$(pwd)" >> $HOME/.bashrc
