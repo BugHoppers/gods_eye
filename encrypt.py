@@ -2,7 +2,8 @@
 
 import os
 import os.path
-from os import listdir
+import getpass
+from pathlib import Path
 from os.path import isfile, join
 from Crypto import Random
 from Crypto.Cipher import AES
@@ -44,35 +45,37 @@ class Encryptor:
             fo.write(dec)
         os.remove(file_name)
 
-
-if os.path.isfile('key'):
+crypt_dir = str(Path.home()) + "/.god"
+if os.path.isfile(crypt_dir + "/" + "key"):
     print('you have a key.')
-    with open('key', 'rb') as r:
+    with open(crypt_dir + "/" + 'key', 'rb') as r:
         key = pickle.load(r)
 else:
     print('generating key...')
     key = Random.get_random_bytes(32)
-    with open('key', 'wb') as w:
+    with open(crypt_dir + "/" + 'key', 'wb') as w:
         pickle.dump(key, w)
-
 enc = Encryptor(key)
-
 def clear(): return os.system('clear')
 
-if os.path.isfile('./config.ge.enc'):
-    enc.decrypt_file("config.ge.enc")
+
+def readPass(file):
+    enc.decrypt_file(crypt_dir + "/" + file)
     p = ''
-    with open("config.ge", "r") as f:
+    file = file[:-4]
+    with open(crypt_dir + "/" + file, "r") as f:
         p = f.readlines()
     decryptedPassword = p[0]
-    print('The sudo password: ' + decryptedPassword)
-    enc.encrypt_file("config.ge")
+    enc.encrypt_file(crypt_dir + "/" + file)
+    return decryptedPassword
 
-else:
+def getPass(file):
     clear()
-    password = str(input("Setting up God's Eye. Enter your sudo password: "))
-    f = open("config.ge", "w+")
+    password = str(getpass.getpass("Setting up God's Eye. Enter your sudo password: "))
+    os.mkdir(crypt_dir)
+    f = open(crypt_dir + "/" + file, "w+")
     f.write(password)
     f.close()
-    enc.encrypt_file("config.ge")
+    enc.encrypt_file(crypt_dir + "/" + file)    
     print("Password encrypted.")
+    return password
