@@ -10,17 +10,14 @@ This is a command line tool that substitute the ` sudo ` command so that we dono
         git clone "https://github.com/BugHoppers/gods_eye.git"  
 
 
-2. Run the script :  
+2. Move to folder :  
 
-        ./OpenGodsEye.sh  
+        cd gods_eye  
 
 
-##  Configure God's Eye
+3. Run the script :  
 
-1. Create a file name ` config.ge ` and write your sudo password  
-
-2. Add the directory to the PATH
-
+        bash ./OpenGodsEye.sh
 
 
 ##  How to Run
