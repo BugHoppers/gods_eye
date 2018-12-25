@@ -46,16 +46,18 @@ class Encryptor:
         os.remove(file_name)
 
 crypt_dir = str(Path.home()) + "/.god"
+
 if os.path.isfile(crypt_dir + "/" + "key"):
     print('you have a key.')
     with open(crypt_dir + "/" + 'key', 'rb') as r:
         key = pickle.load(r)
 else:
     print('generating key...')
-    mkdir(crypt_dir)
+    os.mkdir(crypt_dir)
     key = Random.get_random_bytes(32)
     with open(crypt_dir + "/" + 'key', 'wb') as w:
         pickle.dump(key, w)
+
 enc = Encryptor(key)
 def clear(): return os.system('clear')
 
@@ -73,7 +75,7 @@ def readPass(file):
 def getPass(file):
     clear()
     password = str(getpass.getpass("Setting up God's Eye. Enter your sudo password: "))
-    os.mkdir(crypt_dir)
+    # os.mkdir(crypt_dir)
     f = open(crypt_dir + "/" + file, "w+")
     f.write(password)
     f.close()
