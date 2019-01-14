@@ -4,6 +4,7 @@ import os
 import sys
 from encrypt import readPass, getPass, CRYPT_DIR
 from pathlib import Path
+from FaceRec import capture, matchFace
 
 print("This is God's Eye !\n")
 
@@ -11,9 +12,17 @@ def main():
     try:
         dir = os.path.isfile(CRYPT_DIR + "/" + "config.ge.enc")             # search if sudo password is saved
         if dir is True:
-            sudoPassword = readPass("config.ge.enc")                        # decrypt and fetch password
+            found = matchFace(CRYPT_DIR + "/capture")
+            if found :
+                sudoPassword = readPass("config.ge.enc")                        # decrypt and fetch password
+            else :
+                print("No match!!")
+                quit()
         else:
             sudoPassword = getPass("config.ge")                             # get password and encrypt password
+            name = str(input("Name:"))
+            os.mkdir(CRYPT_DIR + "/capture")
+            capture(CRYPT_DIR + "/capture/" + name)
 
     except Exception as e:
         print(str(e))

@@ -8,7 +8,7 @@ from time import sleep, time
 def capture(img_name):
     print("Starting Face Capture....")
     print("Look at the WebCam")
-    sleep(5)
+    sleep(3)
     cam = cv2.VideoCapture(0)
     cv2.namedWindow("God's Eye")
     img_counter = 0
