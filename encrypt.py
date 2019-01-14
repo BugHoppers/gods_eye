@@ -51,36 +51,39 @@ class Encryptor:
 
 # generate random key
 def key():
-    if os.path.isfile(CRYPT_DIR + "/" + "key"):
-        with open(CRYPT_DIR + "/" + 'key', 'rb') as r:
+    KEY_DIR = CRYPT_DIR + "/key"
+    if os.path.isfile(KEY_DIR):
+        with open(KEY_DIR, 'rb') as r:
             key = pickle.load(r)
     else:
         key = Random.get_random_bytes(32)
-        with open(CRYPT_DIR + "/" + 'key', 'wb') as w:
+        with open(KEY_DIR, 'wb') as w:
             pickle.dump(key, w)
     return key
 
 # read sudo password from user and encrypt password
 def readPass(file):
+    FILE_DIR = CRYPT_DIR + "/" + file
     enc = Encryptor(key())
-    enc.decrypt_file(CRYPT_DIR + "/" + file)
+    enc.decrypt_file(FILE_DIR)
     p = ''
     file = file[:-4]
-    with open(CRYPT_DIR + "/" + file, "r") as f:
+    with open(FILE_DIR, "r") as f:
         p = f.readlines()
     decryptedPassword = p[0]
-    enc.encrypt_file(CRYPT_DIR + "/" + file)
+    enc.encrypt_file(FILE_DIR)
     return decryptedPassword
 
 # decrypt encrypted password and return it
 def getPass(file):
+    FILE_DIR = CRYPT_DIR + "/" + file
     os.system('clear')
     password = str(getpass.getpass("Setting up God's Eye. Enter your sudo password: "))
     os.mkdir(CRYPT_DIR)
-    f = open(CRYPT_DIR + "/" + file, "w+")
+    f = open(FILE_DIR, "w+")
     f.write(password)
     f.close()
     enc = Encryptor(key())
-    enc.encrypt_file(CRYPT_DIR + "/" + file)    
+    enc.encrypt_file(FILE_DIR)    
     print("Password encrypted.")
     return password
