@@ -2,6 +2,7 @@
 
 import os
 import sys
+import glob
 from encrypt import readPass, getPass, CRYPT_DIR
 from pathlib import Path
 from FaceRec import capture, matchFace
@@ -10,9 +11,20 @@ print("This is God's Eye !\n")
 
 def main():
     try:
+
+        bright_dir = glob.glob(os.path.abspath(os.sep)+'sys/class/backlight/' + '*')[0]
+        max_bright_dir = open(bright_dir + "/max_brightness")
+        curr_bright_dir = open(bright_dir + "/brightness")
+        max_bright = max_bright_dir.read()
+        curr_bright = curr_bright_dir.read()
+        max_bright_dir.close()
+        curr_bright_dir.close()
+
+        os.system('echo %d | sudo tee /sys/class/backlight/*/brightness' % int(max_bright))
         dir = os.path.isfile(CRYPT_DIR + "/" + "config.ge.enc")             # search if sudo password is saved
         if dir is True:
             found = matchFace(CRYPT_DIR + "/capture")
+            os.system('echo %d | sudo tee /sys/class/backlight/*/brightness' % int(curr_bright))
             if found :
                 sudoPassword = readPass("config.ge.enc")                        # decrypt and fetch password
             else :
@@ -30,8 +42,7 @@ def main():
 
     command=' '.join(sys.argv[1:])
 
-    os.system('echo %s|sudo -S %s' % (sudoPassword, command))               # execute the sudo command needed
-
+    os.system('echo %s | sudo -S %s' % (sudoPassword, command))               # execute the sudo command needed
 
 if __name__ == '__main__':
     main()
