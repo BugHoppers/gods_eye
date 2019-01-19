@@ -9,9 +9,7 @@ from FaceRec import capture, matchFace
 
 print("This is God's Eye !\n")
 
-def main():
-    try:
-
+def find_brightness():
         bright_dir = glob.glob(os.path.abspath(os.sep)+'sys/class/backlight/' + '*')[0]
         max_bright_dir = open(bright_dir + "/max_brightness")
         curr_bright_dir = open(bright_dir + "/brightness")
@@ -19,13 +17,17 @@ def main():
         curr_bright = int(curr_bright_dir.read())
         max_bright_dir.close()
         curr_bright_dir.close()
-
         temp = (curr_bright/max_bright) * 100
+        return temp
+
+def main():
+    try:
+        bright_percent = find_brightness()
         os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 100>"')
         dir = os.path.isfile(CRYPT_DIR + "/" + "config.ge.enc")             # search if sudo password is saved
         if dir is True:
             found = matchFace(CRYPT_DIR + "/capture")
-            os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 %d>"' % (temp))
+            os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 %d>"' % (bright_percent))
             if found :
                 sudoPassword = readPass("config.ge.enc")                        # decrypt and fetch password
             else :
