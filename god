@@ -21,10 +21,10 @@ def find_brightness():
         return temp
 
 def setMaxBrightness():
-    os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 100>"')
+    os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 100>" >/dev/null')
 
 def setBrightness(bright_percent):
-    os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 %d>"' % (bright_percent))
+    os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 %d>" >/dev/null' % (bright_percent))
 
 def main():
     try:
@@ -35,7 +35,7 @@ def main():
             found = matchFace(CRYPT_DIR + "/capture")
             setBrightness(init_bright_percent)
             if found :
-                sudoPassword = readPass("config.ge.enc")                        # decrypt and fetch password
+                sudoPassword = readPass("config.ge.enc")                    # decrypt and fetch password
             else :
                 print("No match!!")
                 quit()
@@ -47,7 +47,6 @@ def main():
             capture(CRYPT_DIR + "/capture/" + name)
             setBrightness(init_bright_percent)
         
-    
     except Exception as e:
         print(str(e))
         quit()
