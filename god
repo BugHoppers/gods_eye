@@ -20,14 +20,20 @@ def find_brightness():
         temp = (curr_bright/max_bright) * 100
         return temp
 
+def setMaxBrightness():
+    os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 100>"')
+
+def setBrightness(bright_percent):
+    os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 %d>"' % (bright_percent))
+
 def main():
     try:
-        bright_percent = find_brightness()
-        os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 100>"')
+        init_bright_percent = find_brightness()                             # find the current brightness
         dir = os.path.isfile(CRYPT_DIR + "/" + "config.ge.enc")             # search if sudo password is saved
         if dir is True:
+            setMaxBrightness()
             found = matchFace(CRYPT_DIR + "/capture")
-            os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 %d>"' % (bright_percent))
+            setBrightness(init_bright_percent)
             if found :
                 sudoPassword = readPass("config.ge.enc")                        # decrypt and fetch password
             else :
@@ -37,8 +43,11 @@ def main():
             sudoPassword = getPass("config.ge")                             # get password and encrypt password
             name = str(input("Name:"))
             os.mkdir(CRYPT_DIR + "/capture")
+            setMaxBrightness()            
             capture(CRYPT_DIR + "/capture/" + name)
-
+            setBrightness(init_bright_percent)
+        
+    
     except Exception as e:
         print(str(e))
         quit()
