@@ -15,16 +15,17 @@ def main():
         bright_dir = glob.glob(os.path.abspath(os.sep)+'sys/class/backlight/' + '*')[0]
         max_bright_dir = open(bright_dir + "/max_brightness")
         curr_bright_dir = open(bright_dir + "/brightness")
-        max_bright = max_bright_dir.read()
-        curr_bright = curr_bright_dir.read()
+        max_bright = int(max_bright_dir.read())
+        curr_bright = int(curr_bright_dir.read())
         max_bright_dir.close()
         curr_bright_dir.close()
 
-        os.system('echo %d | sudo tee /sys/class/backlight/*/brightness' % int(max_bright))
+        temp = (curr_bright/max_bright) * 100
+        os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 100>"')
         dir = os.path.isfile(CRYPT_DIR + "/" + "config.ge.enc")             # search if sudo password is saved
         if dir is True:
             found = matchFace(CRYPT_DIR + "/capture")
-            os.system('echo %d | sudo tee /sys/class/backlight/*/brightness' % int(curr_bright))
+            os.system('gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 %d>"' % (temp))
             if found :
                 sudoPassword = readPass("config.ge.enc")                        # decrypt and fetch password
             else :
