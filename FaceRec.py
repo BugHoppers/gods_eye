@@ -84,7 +84,7 @@ def matchFace(dir):
 
                 matches = matches.tolist()
                 min_matches = min(matches)
-                threshold = 0.7
+                threshold = 0.5
 
                 if min_matches < threshold:
                     first_match_index = matches.index(min_matches)
