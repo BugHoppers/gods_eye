@@ -3,9 +3,10 @@
 import os
 import sys
 import glob
-from encrypt import readPass, getPass, CRYPT_DIR
+import subprocess
 from pathlib import Path
 from FaceRec import capture, matchFace
+from encrypt import readPass, getPass, CRYPT_DIR
 
 print("This is God's Eye !\n")
 
@@ -27,6 +28,20 @@ def set_brightness(bright_percent):
               '/org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Set '
               'org.gnome.SettingsDaemon.Power.Screen Brightness "<int32 %d>" >/dev/null' % (bright_percent))
 
+def run_command(command, sudo_pass):
+    command = command.split()
+
+    pass_cmd = subprocess.Popen(['echo', sudo_pass], stdout=subprocess.PIPE)
+    p = subprocess.Popen(['sudo','-S'] + command, stdin=pass_cmd.stdout, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+    while True:
+        retcode = p.poll()
+        line = p.stdout.readline().decode()
+        yield line
+        if retcode is not None:
+            yield '\n'
+            break
+
 
 def main():
     try:
@@ -37,12 +52,12 @@ def main():
             found = matchFace(CRYPT_DIR + "/capture")
             set_brightness(init_bright_percent)
             if found:
-                sudoPassword = readPass("config.ge.enc")  # decrypt and fetch password
+                sudo_password = readPass("config.ge.enc")  # decrypt and fetch password
             else:
                 print("No match!!")
                 quit()
         else:
-            sudoPassword = getPass("config.ge")  # get password and encrypt password
+            sudo_password = getPass("config.ge")  # get password and encrypt password
             name = str(input("Name:"))
             os.mkdir(CRYPT_DIR + "/capture")
             set_brightness(100)
@@ -55,7 +70,8 @@ def main():
 
     command = ' '.join(sys.argv[1:])
 
-    os.system('echo %s | sudo -S %s' % (sudoPassword, command))  # execute the sudo command needed
+    for line in run_command(command, sudo_password):
+        print(line, end=" ")
 
 
 if __name__ == '__main__':
